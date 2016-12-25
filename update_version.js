@@ -4,7 +4,7 @@ var sys = require('sys')
 var exec = require('child_process').exec;
 var fs = require('fs');
 
-var version = require('./cropit.jquery.json').version;
+var version = require('./cropit.json').version;
 
 sys.puts('Version = ' + version);
 

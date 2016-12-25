@@ -20,12 +20,11 @@ export const ERRORS = {
   SMALL_IMAGE: { code: 1, message: 'Image is too small.' },
 };
 
-const eventName = (events) => events.map((e) => `${e}.cropit`).join(' ');
 export const EVENTS = {
-  PREVIEW: eventName([
+  PREVIEW: [
     'mousedown', 'mouseup', 'mouseleave',
     'touchstart', 'touchend', 'touchcancel', 'touchleave',
-  ]),
-  PREVIEW_MOVE: eventName(['mousemove', 'touchmove']),
-  ZOOM_INPUT: eventName(['mousemove', 'touchmove', 'change']),
+  ],
+  PREVIEW_MOVE: ['mousemove', 'touchmove'],
+  ZOOM_INPUT: ['mousemove', 'touchmove', 'change'],
 };

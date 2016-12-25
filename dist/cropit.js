@@ -1,14 +1,14 @@
-/*! cropit - v0.5.1 <https://github.com/scottcheng/cropit> */
+/*! cropit - v0.0.1 <https://github.com/nterms/cropit> */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("jquery"));
+		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define(["jquery"], factory);
+		define(factory);
 	else if(typeof exports === 'object')
-		exports["cropit"] = factory(require("jquery"));
+		exports["cropit"] = factory();
 	else
-		root["cropit"] = factory(root["jQuery"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
+		root["cropit"] = factory();
+})(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -55,109 +55,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _slice = Array.prototype.slice;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _jquery = __webpack_require__(1);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	var _cropit = __webpack_require__(2);
-
-	var _cropit2 = _interopRequireDefault(_cropit);
-
-	var _constants = __webpack_require__(4);
-
-	var _utils = __webpack_require__(6);
-
-	var applyOnEach = function applyOnEach($el, callback) {
-	  return $el.each(function () {
-	    var cropit = _jquery2['default'].data(this, _constants.PLUGIN_KEY);
-
-	    if (!cropit) {
-	      return;
-	    }
-	    callback(cropit);
-	  });
-	};
-
-	var callOnFirst = function callOnFirst($el, method, options) {
-	  var cropit = $el.first().data(_constants.PLUGIN_KEY);
-
-	  if (!cropit || !_jquery2['default'].isFunction(cropit[method])) {
-	    return null;
-	  }
-	  return cropit[method](options);
-	};
-
-	var methods = {
-	  init: function init(options) {
-	    return this.each(function () {
-	      // Only instantiate once per element
-	      if (_jquery2['default'].data(this, _constants.PLUGIN_KEY)) {
-	        return;
-	      }
-
-	      var cropit = new _cropit2['default'](_jquery2['default'], this, options);
-	      _jquery2['default'].data(this, _constants.PLUGIN_KEY, cropit);
-	    });
-	  },
-
-	  destroy: function destroy() {
-	    return this.each(function () {
-	      _jquery2['default'].removeData(this, _constants.PLUGIN_KEY);
-	    });
-	  },
-
-	  isZoomable: function isZoomable() {
-	    return callOnFirst(this, 'isZoomable');
-	  },
-
-	  'export': function _export(options) {
-	    return callOnFirst(this, 'getCroppedImageData', options);
-	  }
-	};
-
-	var delegate = function delegate($el, fnName) {
-	  return applyOnEach($el, function (cropit) {
-	    cropit[fnName]();
-	  });
-	};
-
-	var prop = function prop($el, name, value) {
-	  if ((0, _utils.exists)(value)) {
-	    return applyOnEach($el, function (cropit) {
-	      cropit[name] = value;
-	    });
-	  } else {
-	    var cropit = $el.first().data(_constants.PLUGIN_KEY);
-	    return cropit[name];
-	  }
-	};
-
-	_jquery2['default'].fn.cropit = function (method) {
-	  if (methods[method]) {
-	    return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-	  } else if (['imageState', 'imageSrc', 'offset', 'previewSize', 'imageSize', 'zoom', 'initialZoom', 'exportZoom', 'minZoom', 'maxZoom'].indexOf(method) >= 0) {
-	    return prop.apply(undefined, [this].concat(_slice.call(arguments)));
-	  } else if (['rotateCW', 'rotateCCW', 'disable', 'reenable'].indexOf(method) >= 0) {
-	    return delegate.apply(undefined, [this].concat(_slice.call(arguments)));
-	  } else {
-	    return methods.init.apply(this, arguments);
-	  }
-	};
-
-/***/ },
-/* 1 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
-
-/***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
@@ -168,18 +65,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _zoomer = __webpack_require__(3);
+	var _zoomer = __webpack_require__(1);
 
 	var _zoomer2 = _interopRequireDefault(_zoomer);
 
-	var _constants = __webpack_require__(4);
+	var _constants = __webpack_require__(2);
 
-	var _options = __webpack_require__(5);
+	var _options = __webpack_require__(3);
 
-	var _utils = __webpack_require__(6);
+	var _utils = __webpack_require__(4);
 
 	var Cropit = (function () {
-	  function Cropit(jQuery, element, options) {
+	  function Cropit(element, options) {
 	    _classCallCheck(this, Cropit);
 
 	    this.el = element;
@@ -195,11 +92,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function init() {
 	      var _this = this;
 
-	      this.image = new Image();
+	      this.img = new Image();
 	      this.preImage = new Image();
-	      this.image.onload = this.onImageLoaded.bind(this);
+	      this.img.onload = this.onImageLoaded.bind(this);
 	      this.preImage.onload = this.onPreImageLoaded.bind(this);
-	      this.image.onerror = this.preImage.onerror = function () {
+	      this.img.onerror = this.preImage.onerror = function () {
 	        _this.onImageError.call(_this, _constants.ERRORS.IMAGE_FAILED_TO_LOAD);
 	      };
 
@@ -269,26 +166,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (this.options.imageState && this.options.imageState.src) {
 	        this.loadImage(this.options.imageState.src);
 	      }
+
+	      this.el.setAttribute('data-cropit', this);
 	    }
 	  }, {
 	    key: 'bindListeners',
 	    value: function bindListeners() {
-	      this.fileInput.addEventListener('change.cropit', this.onFileChange.bind(this));
-	      this.imageContainer.addEventListener(_constants.EVENTS.PREVIEW, this.onPreviewEvent.bind(this));
-	      this.zoomSlider.addEventListener(_constants.EVENTS.ZOOM_INPUT, this.onZoomSliderChange.bind(this));
+	      on(this.fileInput, ['change'], this.onFileChange.bind(this));
+	      on(this.imageContainer, _constants.EVENTS.PREVIEW, this.onPreviewEvent.bind(this));
+	      on(this.zoomSlider, _constants.EVENTS.ZOOM_INPUT, this.onZoomSliderChange.bind(this));
 
 	      if (this.options.allowDragNDrop) {
-	        this.imageContainer.addEventListener('dragover.cropit dragleave.cropit', this.onDragOver.bind(this));
-	        this.imageContainer.addEventListener('drop.cropit', this.onDrop.bind(this));
+	        on(this.imageContainer, ['dragover', 'dragleave'], this.onDragOver.bind(this));
+	        on(this.imageContainer, ['drop'], this.onDrop.bind(this));
 	      }
 	    }
 	  }, {
 	    key: 'unbindListeners',
 	    value: function unbindListeners() {
-	      this.fileInput.removeEventListener('change.cropit', this.onFileChange);
-	      this.imageContainer.removeEventListener(_constants.EVENTS.PREVIEW, this.onPreviewEvent);
-	      this.imageContainer.removeEventListener('dragover.cropit dragleave.cropit drop.cropit', this.onDragOver);
-	      this.zoomSlider.removeEventListener(_constants.EVENTS.ZOOM_INPUT, this.onZoomSliderChange);
+	      off(this.fileInput, ['change'], this.onFileChange);
+	      off(this.imageContainer, _constants.EVENTS.PREVIEW, this.onPreviewEvent);
+	      off(this.imageContainer, ['dragover', 'dragleave', 'drop'], this.onDragOver);
+	      off(this.zoomSlider, _constants.EVENTS.ZOOM_INPUT, this.onZoomSliderChange);
 	    }
 	  }, {
 	    key: 'onFileChange',
@@ -326,7 +225,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function onDragOver(e) {
 	      e.preventDefault();
 	      e.dataTransfer.dropEffect = 'copy';
-	      this.preview.toggleClass(_constants.CLASS_NAMES.DRAG_HOVERED, e.type === 'dragover');
+	      if (e.type === 'dragover') {
+	        addClass(this.preview, _constants.CLASS_NAMES.DRAG_HOVERED);
+	      } else {
+	        removeClass(this.preview, _constants.CLASS_NAMES.DRAG_HOVERED);
+	      }
 	    }
 	  }, {
 	    key: 'onDrop',
@@ -390,13 +293,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        smallImage: this.options.smallImage
 	      })) {
 	        this.onImageError(_constants.ERRORS.SMALL_IMAGE);
-	        if (this.image.src) {
+	        if (this.img.src) {
 	          this.setImageLoadedClass();
 	        }
 	        return;
 	      }
 
-	      this.image.src = this.preImage.src;
+	      this.img.src = this.preImage.src;
 	    }
 	  }, {
 	    key: 'onImageLoaded',
@@ -411,9 +314,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.options.imageState = {};
 
-	      this.image.setAttribute('src', this.image.src);
+	      this.image.setAttribute('src', this.img.src);
 	      if (this.options.imageBackground) {
-	        this.bg.setAttribute('src', this.image.src);
+	        this.bg.setAttribute('src', this.img.src);
 	      }
 
 	      this.setImageLoadedClass();
@@ -463,7 +366,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      this.moveContinue = false;
-	      this.imageContainer.removeEventListener(_constants.EVENTS.PREVIEW_MOVE);
+	      this.imageContainer.removeEventListener(_constants.EVENTS.PREVIEW_MOVE, this.onMove);
 
 	      if (e.type === 'mousedown' || e.type === 'touchstart') {
 	        this.origin = this.getEventPosition(e);
@@ -524,7 +427,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'centerImage',
 	    value: function centerImage() {
-	      if (!this.image.width || !this.image.height || !this.zoom) {
+	      if (!this.img.width || !this.img.height || !this.zoom) {
 	        return;
 	      }
 
@@ -540,7 +443,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 
-	      this.zoomSliderPos = Number(this.zoomSlider.val());
+	      this.zoomSliderPos = Number(this.zoomSlider.value);
 	      var newZoom = this.zoomer.getZoom(this.zoomSliderPos);
 	      if (newZoom === this.zoom) {
 	        return;
@@ -605,8 +508,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'rotateCW',
 	    value: function rotateCW() {
 	      if (this.shouldRejectImage({
-	        imageWidth: this.image.height,
-	        imageHeight: this.image.width,
+	        imageWidth: this.img.height,
+	        imageHeight: this.img.width,
 	        previewSize: this.previewSize,
 	        maxZoom: this.options.maxZoom,
 	        exportZoom: this.options.exportZoom,
@@ -621,8 +524,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'rotateCCW',
 	    value: function rotateCCW() {
 	      if (this.shouldRejectImage({
-	        imageWidth: this.image.height,
-	        imageHeight: this.image.width,
+	        imageWidth: this.img.height,
+	        imageHeight: this.img.width,
 	        previewSize: this.previewSize,
 	        maxZoom: this.options.maxZoom,
 	        exportZoom: this.options.exportZoom,
@@ -652,7 +555,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getCroppedImageData',
 	    value: function getCroppedImageData(exportOptions) {
-	      if (!this.image.src) {
+	      if (!this.img.src) {
 	        return;
 	      }
 
@@ -667,8 +570,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
 
 	      var zoomedSize = {
-	        width: this.zoom * exportZoom * this.image.width,
-	        height: this.zoom * exportZoom * this.image.height
+	        width: this.zoom * exportZoom * this.img.width,
+	        height: this.zoom * exportZoom * this.img.height
 	      };
 
 	      var canvas = document.createElement('canvas');
@@ -684,7 +587,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      canvasContext.translate(this.rotatedOffset.x * exportZoom, this.rotatedOffset.y * exportZoom);
 	      canvasContext.rotate(this.rotation * Math.PI / 180);
-	      canvasContext.drawImage(this.image, 0, 0, zoomedSize.width, zoomedSize.height);
+	      canvasContext.drawImage(this.img, 0, 0, zoomedSize.width, zoomedSize.height);
 
 	      return canvas.toDataURL(exportOptions.type, exportOptions.quality);
 	    }
@@ -743,7 +646,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      this.zoomSliderPos = this.zoomer.getSliderPos(this.zoom);
-	      this.zoomSlider.val(this.zoomSliderPos);
+	      this.zoomSlider.value = this.zoomSliderPos;
 
 	      this.options.onZoomChange(newZoom);
 	    },
@@ -754,8 +657,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'rotatedOffset',
 	    get: function () {
 	      return {
-	        x: this.offset.x + (this.rotation === 90 ? this.image.height * this.zoom : 0) + (this.rotation === 180 ? this.image.width * this.zoom : 0),
-	        y: this.offset.y + (this.rotation === 180 ? this.image.height * this.zoom : 0) + (this.rotation === 270 ? this.image.width * this.zoom : 0)
+	        x: this.offset.x + (this.rotation === 90 ? this.img.height * this.zoom : 0) + (this.rotation === 180 ? this.img.width * this.zoom : 0),
+	        y: this.offset.y + (this.rotation === 180 ? this.img.height * this.zoom : 0) + (this.rotation === 270 ? this.img.width * this.zoom : 0)
 	      };
 	    }
 	  }, {
@@ -775,7 +678,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'imageState',
 	    get: function () {
 	      return {
-	        src: this.image.src,
+	        src: this.img.src,
 	        offset: this.offset,
 	        zoom: this.zoom
 	      };
@@ -783,7 +686,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'imageSrc',
 	    get: function () {
-	      return this.image.src;
+	      return this.img.src;
 	    },
 	    set: function (imageSrc) {
 	      this.loadImage(imageSrc);
@@ -791,12 +694,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'imageWidth',
 	    get: function () {
-	      return this.rotation % 180 === 0 ? this.image.width : this.image.height;
+	      return this.rotation % 180 === 0 ? this.img.width : this.img.height;
 	    }
 	  }, {
 	    key: 'imageHeight',
 	    get: function () {
-	      return this.rotation % 180 === 0 ? this.image.height : this.image.width;
+	      return this.rotation % 180 === 0 ? this.img.height : this.img.width;
 	    }
 	  }, {
 	    key: 'imageSize',
@@ -862,7 +765,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        width: size.width,
 	        height: size.height
 	      };
-	      this.preview.innerWidth(this.previewSize.width).innerHeight(this.previewSize.height);
+	      this.preview.style.width = this.previewSize.width + 'px';
+	      this.preview.style.height = this.previewSize.height + 'px';
 
 	      if (this.imageLoaded) {
 	        this.setupZoomer();
@@ -888,13 +792,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (el.classList) el.classList.remove(className);else el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 	}
 
+	function toggleClass(el, className) {
+	  if (el.classList) {
+	    el.classList.toggle(className);
+	  } else {
+	    var classes = el.className.split(' ');
+	    var existingIndex = classes.indexOf(className);
+
+	    if (existingIndex >= 0) classes.splice(existingIndex, 1);else classes.push(className);
+
+	    el.className = classes.join(' ');
+	  }
+	}
+
+	function on(el, events, handler) {
+	  events.forEach(function (e) {
+	    el.addEventListener(e, handler);
+	  });
+	}
+
+	function off(el, events, handler) {
+	  events.forEach(function (e) {
+	    el.removeEventListener(e, handler);
+	  });
+	}
+
 	exports['default'] = Cropit;
 	module.exports = exports['default'];
 
 	// $.event.props.push('dataTransfer');
 
 /***/ },
-/* 3 */
+/* 1 */
 /***/ function(module, exports) {
 
 	Object.defineProperty(exports, '__esModule', {
@@ -982,7 +911,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 4 */
+/* 2 */
 /***/ function(module, exports) {
 
 	Object.defineProperty(exports, '__esModule', {
@@ -1013,39 +942,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	exports.ERRORS = ERRORS;
-	var eventName = function eventName(events) {
-	  return events.map(function (e) {
-	    return '' + e + '.cropit';
-	  }).join(' ');
-	};
 	var EVENTS = {
-	  PREVIEW: eventName(['mousedown', 'mouseup', 'mouseleave', 'touchstart', 'touchend', 'touchcancel', 'touchleave']),
-	  PREVIEW_MOVE: eventName(['mousemove', 'touchmove']),
-	  ZOOM_INPUT: eventName(['mousemove', 'touchmove', 'change'])
+	  PREVIEW: ['mousedown', 'mouseup', 'mouseleave', 'touchstart', 'touchend', 'touchcancel', 'touchleave'],
+	  PREVIEW_MOVE: ['mousemove', 'touchmove'],
+	  ZOOM_INPUT: ['mousemove', 'touchmove', 'change']
 	};
 	exports.EVENTS = EVENTS;
 
 /***/ },
-/* 5 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
 
-	var _constants = __webpack_require__(4);
+	var _constants = __webpack_require__(2);
 
 	var options = {
 	  elements: [{
-	    name: '$preview',
+	    name: 'preview',
 	    description: 'The HTML element that displays image preview.',
 	    defaultSelector: '.' + _constants.CLASS_NAMES.PREVIEW
 	  }, {
-	    name: '$fileInput',
+	    name: 'fileInput',
 	    description: 'File input element.',
 	    defaultSelector: 'input.' + _constants.CLASS_NAMES.FILE_INPUT
 	  }, {
-	    name: '$zoomSlider',
+	    name: 'zoomSlider',
 	    description: 'Range input element that controls image zoom.',
 	    defaultSelector: 'input.' + _constants.CLASS_NAMES.ZOOM_SLIDER
 	  }].map(function (o) {
@@ -1175,7 +1099,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var defaults = {};
 	  if (el) {
 	    options.elements.forEach(function (o) {
-	      defaults[o.name] = el.querySelectorAll(o.defaultSelector);
+	      defaults[o.name] = el.querySelectorAll(o.defaultSelector)[0];
 	    });
 	  }
 	  options.values.forEach(function (o) {
@@ -1192,7 +1116,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports['default'] = options;
 
 /***/ },
-/* 6 */
+/* 4 */
 /***/ function(module, exports) {
 
 	Object.defineProperty(exports, '__esModule', {

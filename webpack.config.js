@@ -1,7 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
 
-var pkg = require('./cropit.jquery.json');
+var pkg = require('./cropit.json');
 
 var paths = {
   src: path.join(__dirname, 'src'),
@@ -9,10 +9,10 @@ var paths = {
 };
 
 module.exports = {
-  entry: paths.src + '/plugin.js',
+  entry: paths.src + '/cropit.js',
   output: {
     path: paths.dist,
-    filename: 'jquery.cropit.js',
+    filename: 'cropit.js',
     library: 'cropit',
     libraryTarget: 'umd',
   },
@@ -25,15 +25,6 @@ module.exports = {
         loader: 'babel-loader?blacklist[]=strict',
       },
     ],
-  },
-
-  externals: {
-    jquery: {
-      root: 'jQuery',
-      commonjs: 'jquery',
-      commonjs2: 'jquery',
-      amd: 'jquery',
-    },
   },
 
   plugins: [

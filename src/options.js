@@ -3,17 +3,17 @@ import { CLASS_NAMES } from './constants';
 const options = {
   elements: [
     {
-      name: '$preview',
+      name: 'preview',
       description: 'The HTML element that displays image preview.',
       defaultSelector: `.${CLASS_NAMES.PREVIEW}`,
     },
     {
-      name: '$fileInput',
+      name: 'fileInput',
       description: 'File input element.',
       defaultSelector: `input.${CLASS_NAMES.FILE_INPUT}`,
     },
     {
-      name: '$zoomSlider',
+      name: 'zoomSlider',
       description: 'Range input element that controls image zoom.',
       defaultSelector: `input.${CLASS_NAMES.ZOOM_SLIDER}`,
     },
@@ -182,11 +182,11 @@ const options = {
   ].map((o) => { o.type = 'function'; return o; }),
 };
 
-export const loadDefaults = ($el) => {
+export const loadDefaults = (el) => {
   const defaults = {};
-  if ($el) {
+  if (el) {
     options.elements.forEach((o) => {
-      defaults[o.name] = $el.find(o.defaultSelector);
+      defaults[o.name] = el.querySelectorAll(o.defaultSelector)[0];
     });
   }
   options.values.forEach((o) => {
